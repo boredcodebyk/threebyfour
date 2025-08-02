@@ -37,6 +37,6 @@ jobs:
                 name: Releases
                 path: |
                     build/app/outputs/flutter-apk/app-release.apk
-                    build/windows/runner/Release/threebyfour-${{github.ref_name}}-windows.zip
+                    build/windows/runner/x64/runner/Release/threebyfour-${{github.ref_name}}-windows.zip
                 
 
