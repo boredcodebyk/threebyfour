@@ -122,40 +122,53 @@ class _GalleryViewState extends ConsumerState<GalleryView>
       body: Stack(
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          MasonryGridView.count(
-            crossAxisCount:
-                ResponsiveBreakpoints.of(context).isDesktop
-                    ? 4
-                    : ResponsiveBreakpoints.of(context).isTablet
-                    ? 3
-                    : 2,
-            crossAxisSpacing: 1,
-            mainAxisSpacing: 1,
-            shrinkWrap: true,
-            itemCount: imageList.length,
-            itemBuilder: (BuildContext context, int index) {
-              var imageFile = imageList[index];
-              return Card(
-                elevation: 0,
-                clipBehavior: Clip.antiAlias,
-                child: OpenContainer(
-                  closedColor: Theme.of(context).cardColor,
-                  closedBuilder:
-                      (context, action) => InkWell(
-                        onTap: () => action(),
-                        child: FadeInImage(
-                          placeholder: MemoryImage(kTransparentImage),
-                          image: FileImage(imageFile as File),
-                          filterQuality: FilterQuality.low,
-                        ),
-                      ),
-                  openBuilder:
-                      (context, action) =>
-                          ShowView(list: imageList, initialIndex: index),
+          imageList.isNotEmpty
+              ? MasonryGridView.count(
+                crossAxisCount:
+                    ResponsiveBreakpoints.of(context).isDesktop
+                        ? 4
+                        : ResponsiveBreakpoints.of(context).isTablet
+                        ? 3
+                        : 2,
+                crossAxisSpacing: 1,
+                mainAxisSpacing: 1,
+                shrinkWrap: true,
+                itemCount: imageList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var imageFile = imageList[index];
+                  return Card(
+                    elevation: 0,
+                    clipBehavior: Clip.antiAlias,
+                    child: OpenContainer(
+                      closedColor: Theme.of(context).cardColor,
+                      closedBuilder:
+                          (context, action) => InkWell(
+                            onTap: () => action(),
+                            child: FadeInImage(
+                              placeholder: MemoryImage(kTransparentImage),
+                              image: FileImage(imageFile as File),
+                              filterQuality: FilterQuality.low,
+                            ),
+                          ),
+                      openBuilder:
+                          (context, action) =>
+                              ShowView(list: imageList, initialIndex: index),
+                    ),
+                  );
+                },
+              )
+              : Padding(
+                padding: EdgeInsets.all(16),
+                child: Center(
+                  child: Opacity(
+                    opacity: 0.2,
+                    child: Text(
+                      "Empty",
+                      style: TextStyle(fontFamily: "Staatliches", fontSize: 96),
+                    ),
+                  ),
                 ),
-              );
-            },
-          ),
+              ),
           SafeArea(
             child: Align(
               alignment: Alignment.bottomCenter,
@@ -192,12 +205,46 @@ class _GalleryViewState extends ConsumerState<GalleryView>
                                   },
                                 ),
                                 IconButton(
-                                  icon: Icon(Icons.arrow_downward),
-                                  onPressed: () {},
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.arrow_left),
-                                  onPressed: () {},
+                                  icon: Icon(Icons.info_outline),
+                                  onPressed:
+                                      () => showModalBottomSheet(
+                                        showDragHandle: true,
+                                        context: context,
+                                        builder:
+                                            (context) => SizedBox(
+                                              height: 240,
+                                              width: 480,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(
+                                                  16.0,
+                                                ),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text("Directory"),
+                                                    Opacity(
+                                                      opacity: 0.7,
+                                                      child: Text(
+                                                        ref.watch(
+                                                          selectedDirProvider,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Divider(),
+                                                    Text("Total Image"),
+                                                    Opacity(
+                                                      opacity: 0.7,
+                                                      child: Text(
+                                                        imageList.length
+                                                            .toString(),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                      ),
                                 ),
                                 IconButton(
                                   icon: Icon(Icons.slideshow),
