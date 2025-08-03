@@ -70,7 +70,6 @@ class _ShowViewState extends ConsumerState<ShowView> {
       timer
         ..reset()
         ..start();
-      startTimer();
     }
   }
 
