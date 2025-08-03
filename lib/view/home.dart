@@ -51,66 +51,68 @@ class _HomeViewState extends ConsumerState<HomeView> {
   }
 
   String getFolderName(String path) {
-    return path.split('/').last;
+    return path.split(RegExp(r'\\|\/')).last;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "3/4",
-              style: TextStyle(
-                fontFamily: "Staatliches",
-                fontSize: Theme.of(context).textTheme.displayLarge!.fontSize,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "3/4",
+                style: TextStyle(
+                  fontFamily: "Staatliches",
+                  fontSize: Theme.of(context).textTheme.displayLarge!.fontSize,
+                ),
               ),
-            ),
-            FilledButtonLarge(
-              label: "Select Folder",
-              onPressed: () async {
-                final result = await openFolderSelector(context);
-                if (result) {
-                  if (!mounted) return;
-                  context.push('/gallery');
-                }
-              },
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 24),
-              child: Wrap(
-                runSpacing: 12,
-                spacing: 12,
-                children: [
-                  if (ref.watch(selectedDirProvider).isNotEmpty)
+              FilledButtonLarge(
+                label: "Select Folder",
+                onPressed: () async {
+                  final result = await openFolderSelector(context);
+                  if (result) {
+                    if (!mounted) return;
+                    context.push('/gallery');
+                  }
+                },
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 24),
+                child: Wrap(
+                  runSpacing: 12,
+                  spacing: 12,
+                  children: [
+                    if (ref.watch(selectedDirProvider).isNotEmpty)
+                      ActionChip(
+                        avatar: Icon(Icons.autorenew),
+                        label: Text("Continue from last session?"),
+                        onPressed: () => context.push('/gallery'),
+                      ),
                     ActionChip(
-                      avatar: Icon(Icons.autorenew),
-                      label: Text("Continue from last session?"),
-                      onPressed: () => context.push('/gallery'),
+                      avatar: Icon(Icons.settings_outlined),
+                      label: Text("Settings"),
+                      onPressed: () => context.push('/settings'),
                     ),
-                  ActionChip(
-                    avatar: Icon(Icons.settings_outlined),
-                    label: Text("Settings"),
-                    onPressed: () => context.push('/settings'),
-                  ),
-                  ...ref.watch(recentFolderProvider).map((e) {
-                    return ActionChip(
-                      avatar: Icon(Icons.folder),
-                      label: Text(getFolderName(e)),
-
-                      onPressed: () {
-                        ref.read(selectedDirProvider.notifier).update(e);
-                        context.push('/gallery');
-                      },
-                    );
-                  }),
-                ],
+                    ...ref.watch(recentFolderProvider).map((e) {
+                      return ActionChip(
+                        avatar: Icon(Icons.folder),
+                        label: Text(getFolderName(e)),
+        
+                        onPressed: () {
+                          ref.read(selectedDirProvider.notifier).update(e);
+                          context.push('/gallery');
+                        },
+                      );
+                    }),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

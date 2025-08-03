@@ -5,6 +5,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -40,15 +41,62 @@ class _GalleryViewState extends ConsumerState<GalleryView>
   int timerIndex = 0;
 
   void openShow(context) {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (context) => ShowView(list: imageList)));
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return SharedAxisTransition(
+            fillColor: Theme.of(context).cardColor,
+            animation: animation,
+            secondaryAnimation: secondaryAnimation,
+            transitionType: SharedAxisTransitionType.scaled,
+            child: child,
+          );
+        },
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return ShowView(list: imageList);
+        },
+      ),
+    );
+  }
+
+  void openTimedShow(context) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return SharedAxisTransition(
+            fillColor: Theme.of(context).cardColor,
+            animation: animation,
+            secondaryAnimation: secondaryAnimation,
+            transitionType: SharedAxisTransitionType.scaled,
+            child: child,
+          );
+        },
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return ShowView(
+            list: imageList,
+            duration: timer[timerIndex],
+            timed: true,
+          );
+        },
+      ),
+    );
   }
 
   void openImage(context, int index) {
     Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => ShowView(list: imageList, initialIndex: index),
+      PageRouteBuilder(
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return SharedAxisTransition(
+            fillColor: Theme.of(context).cardColor,
+            animation: animation,
+            secondaryAnimation: secondaryAnimation,
+            transitionType: SharedAxisTransitionType.scaled,
+            child: child,
+          );
+        },
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return ShowView(list: imageList, initialIndex: index);
+        },
       ),
     );
   }
@@ -121,7 +169,7 @@ class _GalleryViewState extends ConsumerState<GalleryView>
                         child: SizedBox(
                           height: 64,
                           child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            padding: EdgeInsets.symmetric(horizontal: 16),
                             child: Row(
                               spacing: 4,
                               mainAxisSize: MainAxisSize.max,
@@ -130,7 +178,10 @@ class _GalleryViewState extends ConsumerState<GalleryView>
                                 IconButton(
                                   icon: Icon(Icons.casino_outlined),
                                   onPressed: () {
-                                    openImage(context, Random().nextInt(imageList.length));
+                                    openImage(
+                                      context,
+                                      Random().nextInt(imageList.length),
+                                    );
                                   },
                                 ),
                                 IconButton(
@@ -232,9 +283,15 @@ class _GalleryViewState extends ConsumerState<GalleryView>
                                         //   groupValue: "limit",
                                         //   onChanged: (value) {},),
                                         // ),
-                                        FilledButtonLarge(
-                                          label: "Start",
-                                          onPressed: () {},
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                          child: FilledButtonLarge(
+                                            label: "Start",
+                                            onPressed: () {
+                                              context.pop();
+                                              openTimedShow(context);
+                                            },
+                                          ),
                                         ),
                                       ],
                                     ),
