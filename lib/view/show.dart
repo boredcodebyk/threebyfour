@@ -206,7 +206,7 @@ class _ShowViewState extends ConsumerState<ShowView> {
                 backgroundDecoration: BoxDecoration(
                   color: Theme.of(context).scaffoldBackgroundColor,
                 ),
-                scrollPhysics: const BouncingScrollPhysics(),
+                scrollPhysics:timed ? NeverScrollableScrollPhysics() : const BouncingScrollPhysics(),
                 loadingBuilder:
                     (context, event) => Image.memory(kTransparentImage),
                 builder: (context, index) {
