@@ -27,27 +27,38 @@ class MyApp extends ConsumerWidget {
     return MaterialApp.router(
       title: '3by4',
       routerConfig: ref.watch(routerProvider),
-      builder: (context, child) => ResponsiveBreakpoints.builder(
-        child: child!,
-        breakpoints: [
-          const Breakpoint(start: 0, end: 450, name: MOBILE),
-          const Breakpoint(start: 451, end: 800, name: TABLET),
-          const Breakpoint(start: 801, end: 1920, name: DESKTOP),
-          const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
-        ],
-      ),
+      builder:
+          (context, child) => ResponsiveBreakpoints.builder(
+            child: child!,
+            breakpoints: [
+              const Breakpoint(start: 0, end: 450, name: MOBILE),
+              const Breakpoint(start: 451, end: 800, name: TABLET),
+              const Breakpoint(start: 801, end: 1920, name: DESKTOP),
+              const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
+            ],
+          ),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 193, 0, 0),
         ),
-        fontFamily: "Inter"
+        fontFamily: "Inter",
+        pageTransitionsTheme: PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+          },
+        ),
       ),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 193, 0, 0),
-          brightness: Brightness.dark
+          brightness: Brightness.dark,
         ),
-        fontFamily: "Inter"
+        fontFamily: "Inter",
+        pageTransitionsTheme: PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+          },
+        ),
       ),
       themeMode: ref.watch(themeModeProvider),
     );
