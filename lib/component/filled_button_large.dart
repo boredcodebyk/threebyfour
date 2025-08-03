@@ -85,11 +85,3 @@ class _FilledButtonLargeState extends State<FilledButtonLarge>
     );
   }
 }
-
-class ExpressiveFastSpatial extends Curve {
-  @override
-  double transform(double t) {
-    // TODO: implement transform
-    return super.transform(t);
-  }
-}

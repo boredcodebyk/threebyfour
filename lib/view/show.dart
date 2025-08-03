@@ -152,7 +152,7 @@ class _ShowViewState extends ConsumerState<ShowView> {
   @override
   void dispose() {
     if (timed) {
-      timer?.cancel();
+      timer.cancel();
       durationNotifier.dispose();
     }
     super.dispose();
@@ -264,8 +264,8 @@ class _ShowViewState extends ConsumerState<ShowView> {
                                               : Icon(Icons.play_arrow),
                                       onPressed: () {
                                         timer.isActive
-                                            ? timer?.pause()
-                                            : timer?.start();
+                                            ? timer.pause()
+                                            : timer.start();
                                       },
                                     ),
                                   IconButton(
