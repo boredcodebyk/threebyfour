@@ -58,9 +58,11 @@ class RecentFolderNotifier extends Notifier<List<String>> {
     return currentValue;
   }
 
-  void update(path) {
+  void update(String path) {
     if (!state.contains(path)) {
       state = [path, ...state];
     }
   }
+
+  void updateList(List<String> list) => state = list;
 }

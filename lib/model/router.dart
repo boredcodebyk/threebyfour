@@ -91,8 +91,28 @@ final routerProvider = Provider<GoRouter>((ref) {
                   secondaryAnimation,
                   child,
                 ) {
-                  // Change the opacity of the screen using a Curve based on the the animation's
-                  // value
+                  return SharedAxisTransition(
+                    animation: animation,
+                    secondaryAnimation: secondaryAnimation,
+                    transitionType: SharedAxisTransitionType.horizontal,
+                    child: child,
+                  );
+                },
+              );
+            },
+          ),
+          GoRoute(
+            path: 'recent',
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                key: state.pageKey,
+                child: RecentFolderSettingsView(),
+                transitionsBuilder: (
+                  context,
+                  animation,
+                  secondaryAnimation,
+                  child,
+                ) {
                   return SharedAxisTransition(
                     animation: animation,
                     secondaryAnimation: secondaryAnimation,
