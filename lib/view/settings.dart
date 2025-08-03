@@ -35,6 +35,11 @@ class SettingsView extends StatelessWidget {
                       title: Text("Recent Folder"),
                       onTap: () => context.push('/settings/recent'),
                     ),
+                    ListTile(
+                      leading: Icon(Icons.info_outline),
+                      title: Text("About"),
+                      onTap: () => context.push('/settings/about'),
+                    ),
                   ],
                 ),
               ),

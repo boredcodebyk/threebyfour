@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../view/about.dart';
 import '../view/home.dart';
 import '../view/gallery.dart';
 import '../view/settings.dart';
@@ -107,6 +108,27 @@ final routerProvider = Provider<GoRouter>((ref) {
               return CustomTransitionPage(
                 key: state.pageKey,
                 child: RecentFolderSettingsView(),
+                transitionsBuilder: (
+                  context,
+                  animation,
+                  secondaryAnimation,
+                  child,
+                ) {
+                  return SharedAxisTransition(
+                    animation: animation,
+                    secondaryAnimation: secondaryAnimation,
+                    transitionType: SharedAxisTransitionType.horizontal,
+                    child: child,
+                  );
+                },
+              );
+            },
+          ),GoRoute(
+            path: 'about',
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                key: state.pageKey,
+                child: AboutView(),
                 transitionsBuilder: (
                   context,
                   animation,
