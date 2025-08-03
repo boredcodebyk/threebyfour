@@ -69,8 +69,6 @@ final routerProvider = Provider<GoRouter>((ref) {
               secondaryAnimation,
               child,
             ) {
-              // Change the opacity of the screen using a Curve based on the the animation's
-              // value
               return SharedAxisTransition(
                 animation: animation,
                 secondaryAnimation: secondaryAnimation,
