@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../component/FilledButtonLarge.dart';
+import '../component/filledButtonLarge.dart';
 import '../model/settings.dart';
 
 class HomeView extends ConsumerStatefulWidget {

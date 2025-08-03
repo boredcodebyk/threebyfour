@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-import '../component/FilledButtonLarge.dart';
+import '../component/filledButtonLarge.dart';
 import '../model/settings.dart';
 import 'show.dart';
 
