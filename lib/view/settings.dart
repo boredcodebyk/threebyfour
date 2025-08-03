@@ -16,32 +16,36 @@ class SettingsView extends StatelessWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  ListTile(
-                    leading: Icon(Icons.phone_android),
-                    title: Text("Theme"),
-                    onTap: () => context.push('/settings/theme'),
-                  ),
-                  Divider(
-                    height: 4,
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.folder_outlined),
-                    title: Text("Recent Folder"),
-                    onTap: () => context.push('/settings/recent'),
-                  ),
-                  Divider(
-                    height: 4,
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.info_outline),
-                    title: Text("About"),
-                    onTap: () => context.push('/settings/about'),
-                  ),
-                ],
+              child: Card(
+                elevation: 0,
+                clipBehavior: Clip.antiAlias,
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: Icon(Icons.phone_android),
+                      title: Text("Theme"),
+                      onTap: () => context.push('/settings/theme'),
+                    ),
+                    Divider(
+                      height: 4,
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.folder_outlined),
+                      title: Text("Recent Folder"),
+                      onTap: () => context.push('/settings/recent'),
+                    ),
+                    Divider(
+                      height: 4,
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.info_outline),
+                      title: Text("About"),
+                      onTap: () => context.push('/settings/about'),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
