@@ -34,7 +34,7 @@ class _ShowViewState extends ConsumerState<ShowView> {
   late Duration duration = widget.duration;
   late ValueNotifier<Duration> durationNotifier = ValueNotifier(duration);
 
-  PausableTimer? timer;
+  late final PausableTimer timer;
 
   void onPageChanged(int index) {
     setState(() {
@@ -48,12 +48,14 @@ class _ShowViewState extends ConsumerState<ShowView> {
       curve: Cubic(0.42, 1.67, 0.21, 0.90),
     );
     if (timed) {
-      timer?.cancel();
       if (currentIndex + 1 == widget.list.length) {
         showEndAlert();
+        timer.cancel();
       } else {
         durationNotifier.value = duration;
-        startTimer();
+        timer
+          ..reset()
+          ..start();
       }
     }
   }
@@ -64,27 +66,32 @@ class _ShowViewState extends ConsumerState<ShowView> {
       curve: Cubic(0.42, 1.67, 0.21, 0.90),
     );
     if (timed) {
-      timer?.cancel();
       durationNotifier.value = duration;
+      timer
+        ..reset()
+        ..start();
       startTimer();
     }
   }
 
   void startTimer() {
     timer = PausableTimer.periodic(Duration(seconds: 1), () => countdown());
-    timer!.start();
+    timer.start();
   }
 
   void countdown() {
     final sec = durationNotifier.value.inSeconds - 1;
-    if (sec == -1) {
-      timer?.cancel();
+    if (sec < 0) {
+      timer.pause();
       if (currentIndex + 1 == widget.list.length) {
         showEndAlert();
+        timer.cancel();
       } else {
-        next();
         durationNotifier.value = duration;
-        startTimer();
+        timer
+          ..reset()
+          ..start();
+        next();
       }
     } else {
       durationNotifier.value = Duration(seconds: sec);
@@ -252,11 +259,11 @@ class _ShowViewState extends ConsumerState<ShowView> {
                                   if (timed)
                                     IconButton(
                                       icon:
-                                          timer!.isActive
+                                          timer.isActive
                                               ? Icon(Icons.pause)
                                               : Icon(Icons.play_arrow),
                                       onPressed: () {
-                                        timer!.isActive
+                                        timer.isActive
                                             ? timer?.pause()
                                             : timer?.start();
                                       },
