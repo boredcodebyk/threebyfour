@@ -111,7 +111,14 @@ class _GalleryViewState extends ConsumerState<GalleryView>
     return Scaffold(
       resizeToAvoidBottomInset: true,
       extendBody: true,
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () => context.push('/settings'),
+            icon: Icon(Icons.settings_outlined),
+          ),
+        ],
+      ),
       body: Stack(
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -208,6 +215,7 @@ class _GalleryViewState extends ConsumerState<GalleryView>
                     FloatingActionButton(
                       onPressed:
                           () => showModalBottomSheet(
+                            showDragHandle: true,
                             context: context,
                             builder: (context) {
                               return StatefulBuilder(
@@ -219,50 +227,53 @@ class _GalleryViewState extends ConsumerState<GalleryView>
                                         ListTile(
                                           leading: Icon(Icons.timer_outlined),
                                           title: Text("Display each image for"),
-                                          subtitle: Wrap(
-                                            spacing: 2,
-                                            children: [
-                                              FilterChip(
-                                                label: Text("30s"),
-                                                selected: timerIndex == 0,
-                                                onSelected:
-                                                    (value) => setState(() {
-                                                      timerIndex = 0;
-                                                    }),
-                                              ),
-                                              FilterChip(
-                                                label: Text("60s"),
-                                                selected: timerIndex == 1,
-                                                onSelected:
-                                                    (value) => setState(() {
-                                                      timerIndex = 1;
-                                                    }),
-                                              ),
-                                              FilterChip(
-                                                label: Text("2 mins"),
-                                                selected: timerIndex == 2,
-                                                onSelected:
-                                                    (value) => setState(() {
-                                                      timerIndex = 2;
-                                                    }),
-                                              ),
-                                              FilterChip(
-                                                label: Text("5 mins"),
-                                                selected: timerIndex == 3,
-                                                onSelected:
-                                                    (value) => setState(() {
-                                                      timerIndex = 3;
-                                                    }),
-                                              ),
-                                              FilterChip(
-                                                label: Text("10 mins"),
-                                                selected: timerIndex == 4,
-                                                onSelected:
-                                                    (value) => setState(() {
-                                                      timerIndex = 4;
-                                                    }),
-                                              ),
-                                            ],
+                                          subtitle: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Wrap(
+                                              spacing: 8,
+                                              children: [
+                                                FilterChip(
+                                                  label: Text("30s"),
+                                                  selected: timerIndex == 0,
+                                                  onSelected:
+                                                      (value) => setState(() {
+                                                        timerIndex = 0;
+                                                      }),
+                                                ),
+                                                FilterChip(
+                                                  label: Text("60s"),
+                                                  selected: timerIndex == 1,
+                                                  onSelected:
+                                                      (value) => setState(() {
+                                                        timerIndex = 1;
+                                                      }),
+                                                ),
+                                                FilterChip(
+                                                  label: Text("2 mins"),
+                                                  selected: timerIndex == 2,
+                                                  onSelected:
+                                                      (value) => setState(() {
+                                                        timerIndex = 2;
+                                                      }),
+                                                ),
+                                                FilterChip(
+                                                  label: Text("5 mins"),
+                                                  selected: timerIndex == 3,
+                                                  onSelected:
+                                                      (value) => setState(() {
+                                                        timerIndex = 3;
+                                                      }),
+                                                ),
+                                                FilterChip(
+                                                  label: Text("10 mins"),
+                                                  selected: timerIndex == 4,
+                                                  onSelected:
+                                                      (value) => setState(() {
+                                                        timerIndex = 4;
+                                                      }),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                         // ListTile(
@@ -284,7 +295,9 @@ class _GalleryViewState extends ConsumerState<GalleryView>
                                         //   onChanged: (value) {},),
                                         // ),
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 16.0,
+                                          ),
                                           child: FilledButtonLarge(
                                             label: "Start",
                                             onPressed: () {
