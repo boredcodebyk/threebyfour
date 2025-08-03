@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
@@ -128,7 +129,9 @@ class _GalleryViewState extends ConsumerState<GalleryView>
                               children: <Widget>[
                                 IconButton(
                                   icon: Icon(Icons.casino_outlined),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    openImage(context, Random().nextInt(imageList.length));
+                                  },
                                 ),
                                 IconButton(
                                   icon: Icon(Icons.arrow_downward),
