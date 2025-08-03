@@ -80,6 +80,32 @@ final routerProvider = Provider<GoRouter>((ref) {
             },
           );
         },
+        routes: [
+          GoRoute(
+            path: 'theme',
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                key: state.pageKey,
+                child: ThemeSettingView(),
+                transitionsBuilder: (
+                  context,
+                  animation,
+                  secondaryAnimation,
+                  child,
+                ) {
+                  // Change the opacity of the screen using a Curve based on the the animation's
+                  // value
+                  return SharedAxisTransition(
+                    animation: animation,
+                    secondaryAnimation: secondaryAnimation,
+                    transitionType: SharedAxisTransitionType.horizontal,
+                    child: child,
+                  );
+                },
+              );
+            },
+          ),
+        ],
       ),
     ],
   );
