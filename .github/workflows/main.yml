@@ -4,8 +4,29 @@ on:
     push
 
 jobs:
-    build:
-        name: "Build"
+    build_windows:
+      name: "Windows Build"
+      runs-on: "windows-latest"
+      steps:
+        - name: Clone repository
+          uses: actions/checkout@v4
+        - name: Set up Flutter
+          uses: subosito/flutter-action@v2
+          with:
+            channel: stable
+            flutter-version-file: pubspec.yaml # path to pubspec.yaml
+        - name: "Build Windows"  
+          run: dart run inno_bundle:build --release
+        - name: Archive Release
+          run: Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath threebyfour-${{github.ref_name}}-windows.zip
+        - name: Upload Artifacts
+          uses: actions/upload-artifact@v4
+          with:
+              name: Releases
+              path: |
+                  threebyfour-${{github.ref_name}}-windows.zip
+    build_apk:
+        name: "APK Build"
         runs-on: "windows-latest"
         steps:
           - name: Clone repository
@@ -23,20 +44,11 @@ jobs:
           - run: flutter --version
           - name: "Build APK"
             run: flutter build apk --release
-          - name: "Build Windows"  
-            run: flutter build windows --release
-          - name: Archive Release
-            uses: thedoctor0/zip-release@master
-            with:
-                type: 'zip'
-                filename: threebyfour-${{github.ref_name}}-windows.zip
-                directory: build/windows/x64/runner/Release
           - name: Upload Artifacts
             uses: actions/upload-artifact@v4
             with:
                 name: Releases
                 path: |
                     build/app/outputs/flutter-apk/app-release.apk
-                    build/windows/x64/runner/Release/threebyfour-${{github.ref_name}}-windows.zip
                 
 
