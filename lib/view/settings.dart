@@ -73,6 +73,7 @@ class ThemeSettingView extends ConsumerWidget {
                     elevation: 0,
                     clipBehavior: Clip.antiAlias,
                     child: ListView(
+                      padding: EdgeInsets.zero,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       children: [
@@ -190,6 +191,7 @@ class _RecentFolderSettingsViewState
                         elevation: 0,
                         clipBehavior: Clip.antiAlias,
                         child: ListView.separated(
+                          padding: EdgeInsets.zero,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
