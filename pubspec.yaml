@@ -1,5 +1,8 @@
 name: "threebyfour"
 description: "A new Flutter project."
+homepage: "https://github.com/boredcodebyk/threebyfour/"
+repository: "https://github.com/boredcodebyk/threebyfour/"
+issue_tracker: "https://github.com/boredcodebyk/threebyfour/issues"
 publish_to: "none"
 version: "1.0.0+1"
 environment:
@@ -37,6 +40,7 @@ flutter:
         - asset: "assets/fonts/Staatliches-Regular.ttf"
     - family: "Inter"
       fonts:
+        - asset: "assets/fonts/Inter-Regular.ttf"
 inno_bundle:
   id: c62c352a-ca48-50a1-9b0e-e5a4eadbd3bf
   publisher: boredcodebyk

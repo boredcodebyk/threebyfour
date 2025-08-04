@@ -22,9 +22,10 @@ jobs:
         - name: Upload Artifacts
           uses: actions/upload-artifact@v4
           with:
-              name: Releases
+              name: Windows Build
               path: |
                   threebyfour-${{github.ref_name}}-windows.zip
+                  build/windows/x64/installer/Release/Threebyfour-x86_64-1.0.0+1-Installer.exe
     build_apk:
         name: "APK Build"
         runs-on: "windows-latest"
@@ -47,7 +48,7 @@ jobs:
           - name: Upload Artifacts
             uses: actions/upload-artifact@v4
             with:
-                name: Releases
+                name: Android Build
                 path: |
                     build/app/outputs/flutter-apk/app-release.apk
                 
