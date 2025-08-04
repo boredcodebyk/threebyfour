@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
@@ -146,8 +147,9 @@ class _GalleryViewState extends ConsumerState<GalleryView>
                             onTap: () => action(),
                             child: FadeInImage(
                               placeholder: MemoryImage(kTransparentImage),
-                              image: FileImage(imageFile as File),
+                              image: FileImage(imageFile as File,scale: 0.01),
                               filterQuality: FilterQuality.low,
+                              width: 100,
                             ),
                           ),
                       openBuilder:
