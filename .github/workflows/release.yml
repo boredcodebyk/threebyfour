@@ -85,13 +85,12 @@ jobs:
           uses: actions/download-artifact@v4
           with:
             name: Android-Build
-            path: threebyfour-${{github.ref_name}}.apk
+            path: android
         - name: Download Windows Installer
           uses: actions/download-artifact@v4
           with:
             name: Windows-Build
-            path: threebyfour-x86_64-${{github.ref_name}}-Installer.exe
-        - run: tree
+            path: windows
         - name: Release
           uses: softprops/action-gh-release@v2
           if: github.ref_type == 'tag'
