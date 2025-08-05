@@ -1,6 +1,7 @@
 name: "Build and Release"
 
 on:
+  workflow_dispatch: 
   push:
     tags:
       - 'v*'
@@ -90,9 +91,12 @@ jobs:
           with:
             name: Windows-Build
             path: threebyfour-x86_64-${{github.ref_name}}-Installer.exe
+        - run: tree
         - name: Release
-          uses: ncipollo/release-action@v1  
+          uses: softprops/action-gh-release@v2
           if: github.ref_type == 'tag'
           with:
-            artifacts: "threebyfour-x86_64-${{github.ref_name}}-Installer.exe,threebyfour-${{github.ref_name}}.apk"
-            bodyFile: WHATSNEW.md
+            body_path: WHATSNEW.md
+            files: |
+              /home/runner/work/threebyfour/threebyfour/threebyfour-x86_64-${{github.ref_name}}-Installer.exe
+              /home/runner/work/threebyfour/threebyfour/threebyfour-${{github.ref_name}}.apk
