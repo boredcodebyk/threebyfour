@@ -96,5 +96,5 @@ jobs:
           with:
             body_path: WHATSNEW.md
             files: |
-              threebyfour-x86_64-${{github.ref_name}}-Installer.exe
-              threebyfour-${{github.ref_name}}.apk
+              /home/runner/work/threebyfour/threebyfour/threebyfour-x86_64-${{github.ref_name}}-Installer.exe
+              /home/runner/work/threebyfour/threebyfour/threebyfour-${{github.ref_name}}.apk
