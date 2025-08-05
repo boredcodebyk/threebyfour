@@ -1,55 +1,54 @@
 name: "Build"
 
-on:
-    push
+on: workflow_dispatch
 
 jobs:
-    build_windows:
-      name: "Windows Build"
+  build_windows:
+    name: "Windows Build"
+    runs-on: "windows-latest"
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: pubspec.yaml # path to pubspec.yaml
+      - name: "Build Windows"  
+        run: dart run inno_bundle:build --release
+      - name: Archive Release
+        run: Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath threebyfour-${{github.ref_name}}-windows.zip
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+            name: Windows Build
+            path: |
+                threebyfour-${{github.ref_name}}-windows.zip
+                build/windows/x64/installer/Release/Threebyfour-x86_64-1.0.0+1-Installer.exe
+  build_apk:
+      name: "APK Build"
       runs-on: "windows-latest"
       steps:
         - name: Clone repository
           uses: actions/checkout@v4
+        - name: Set Up Java
+          uses: actions/setup-java@v3.12.0
+          with:
+              distribution: 'adopt'
+              java-version: '21'
         - name: Set up Flutter
           uses: subosito/flutter-action@v2
           with:
             channel: stable
             flutter-version-file: pubspec.yaml # path to pubspec.yaml
-        - name: "Build Windows"  
-          run: dart run inno_bundle:build --release
-        - name: Archive Release
-          run: Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath threebyfour-${{github.ref_name}}-windows.zip
+        - run: flutter --version
+        - name: "Build APK"
+          run: flutter build apk --release
         - name: Upload Artifacts
           uses: actions/upload-artifact@v4
           with:
-              name: Windows Build
+              name: Android Build
               path: |
-                  threebyfour-${{github.ref_name}}-windows.zip
-                  build/windows/x64/installer/Release/Threebyfour-x86_64-1.0.0+1-Installer.exe
-    build_apk:
-        name: "APK Build"
-        runs-on: "windows-latest"
-        steps:
-          - name: Clone repository
-            uses: actions/checkout@v4
-          - name: Set Up Java
-            uses: actions/setup-java@v3.12.0
-            with:
-                distribution: 'adopt'
-                java-version: '21'
-          - name: Set up Flutter
-            uses: subosito/flutter-action@v2
-            with:
-              channel: stable
-              flutter-version-file: pubspec.yaml # path to pubspec.yaml
-          - run: flutter --version
-          - name: "Build APK"
-            run: flutter build apk --release
-          - name: Upload Artifacts
-            uses: actions/upload-artifact@v4
-            with:
-                name: Android Build
-                path: |
-                    build/app/outputs/flutter-apk/app-release.apk
-                
+                  build/app/outputs/flutter-apk/app-release.apk
+              
 
