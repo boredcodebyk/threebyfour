@@ -28,13 +28,13 @@ jobs:
         - name: Upload Artifacts
           uses: actions/upload-artifact@v4
           with:
-              name: Windows Build
-              path: |
-                  threebyfour-${{github.ref_name}}-windows.zip
-                  threebyfour-x86_64-${{github.ref_name}}-Installer.exe
+              name: Windows-Build
+              path: threebyfour-x86_64-${{github.ref_name}}-Installer.exe
     build_apk:
         name: "APK Build"
-        runs-on: "windows-latest"
+        runs-on: "ubuntu-latest"
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         steps:
           - name: Clone repository
             uses: actions/checkout@v4
@@ -51,7 +51,7 @@ jobs:
           - run: flutter --version
           - name: Decode Keystore
             run: |
-              echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
+              echo $KEYSTORE_BASE64 | base64 --decode > android/app/keystore.jks
           - name: Create key.properties
             run: |
               echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
@@ -63,12 +63,38 @@ jobs:
           - name: Copy and Rename Installer
             run: |    
               Copy-Item build/app/outputs/flutter-apk/app-release.apk app-release.apk
-              Rename-Item app-release.apk threebyfour-${{github.ref_name}}-Installer.exe
+              Rename-Item app-release.apk threebyfour-${{github.ref_name}}.apk
           - name: Upload Artifacts
             uses: actions/upload-artifact@v4
             with:
-                name: Android Build
-                path: |
-                    threebyfour-${{github.ref_name}}-Installer.exe
+                name: Android-Build
+                path: threebyfour-${{github.ref_name}}.apk
                 
+    release:
+      permissions:
+        contents: write
+      needs: 
+        - build_apk
+        - build_windows
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
 
+        - name: Download APK
+          uses: actions/download-artifact@v4
+          with:
+            name: Android-Build
+            path: threebyfour-${{github.ref_name}}.apk
+        - name: Download Windows Installer
+          uses: actions/download-artifact@v4
+          with:
+            name: Windows-Build
+            path: threebyfour-x86_64-${{github.ref_name}}-Installer.exe
+        - name: Release
+          uses: softprops/action-gh-release@v2
+          if: github.ref_type == 'tag'
+          with:
+            body_path: WHATSNEW.md
+            files: |
+              threebyfour-x86_64-${{github.ref_name}}-Installer.exe
+              threebyfour-${{github.ref_name}}.apk
