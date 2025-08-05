@@ -91,10 +91,8 @@ jobs:
             name: Windows-Build
             path: threebyfour-x86_64-${{github.ref_name}}-Installer.exe
         - name: Release
-          uses: softprops/action-gh-release@v2
+          uses: ncipollo/release-action@v1  
           if: github.ref_type == 'tag'
           with:
-            body_path: WHATSNEW.md
-            files: |
-              /home/runner/work/threebyfour/threebyfour/threebyfour-x86_64-${{github.ref_name}}-Installer.exe
-              /home/runner/work/threebyfour/threebyfour/threebyfour-${{github.ref_name}}.apk
+            artifacts: "threebyfour-x86_64-${{github.ref_name}}-Installer.exe,threebyfour-${{github.ref_name}}.apk"
+            bodyFile: WHATSNEW.md
